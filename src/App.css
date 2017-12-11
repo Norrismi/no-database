@@ -49,14 +49,36 @@ table{
  padding: 0 140px 0 0;
 }
 .priceHeader{
-  padding: 0 100px 0 0;
+  padding: 0 150px 0 0;
+}
+.changeHeader{
+  padding: 0 0 0 0;
 }
 .price{
   width: 200px;
 }
+ th.priceHeader:hover{
+  cursor: pointer;
+  color: rgb(122, 122, 122);
+}
+th.changeHeader:hover{
+  cursor: pointer;
+  color: rgb(122, 122, 122);
+}
+th.mcHeader:hover{
+  cursor: pointer;
+  color: rgb(122, 122, 122);
+}
+.change{
+  width: 150px;
+}
 
 .th{
   float: left;
+}
+/* ---------------------------- */
+.changeHeader a:hover{
+  color: red;
 }
 
 .dropdown-content {

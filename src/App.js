@@ -12,10 +12,13 @@ class App extends Component {
       coinApi: [],
       Coin1: {},
       value: '10',
-    
+      
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.sortCoin = this.sortCoin.bind(this);
+    this.sortMarketCap = this.sortMarketCap.bind(this);
+    this.sortPrice = this.sortPrice.bind(this)
   }
 
   componentDidMount(){
@@ -23,7 +26,6 @@ class App extends Component {
       console.log(response);
       this.setState({ coinApi: response.data, Coin1: response.data[0] })
     
-      console.log(this.state.coinApi)
     })
   }
     //dropdown button
@@ -31,8 +33,25 @@ class App extends Component {
     this.setState({ value: event.target.value })
   }
     //sort
-  handleChange(event){
-    this.setState({ value: event.target.value })
+  sortCoin(event){
+    const sortedCoin = this.state.coinApi.sort(function(a,b){
+      return b.percent_change_24h - a.percent_change_24h;
+    })
+    this.setState({ coinApi: sortedCoin })
+  }
+    //sort market cap
+  sortMarketCap(event){
+    const sortMarketCap = this.state.coinApi.sort(function(a,b){
+      return b.market_cap_usd - a.market_cap_usd;
+    })
+    this.setState({ coinApi: sortMarketCap })
+  }
+
+  sortPrice(event){
+    const sortPrice = this.state.coinApi.sort(function(a,b){
+      return b.price_usd - a.price_usd;
+    })
+    this.setState({ coinApi: sortPrice })
   }
 
 
@@ -63,16 +82,12 @@ class App extends Component {
           <tbody>
             <tr>
               <th className="nameHeader">Name</th>        
-              <th className="priceHeader">Price</th> 
-                  {/* sort */}
-              <th value ={this.state.value} onClick={this.handleChange} className="changeHeader">24hr Change</th>
+              <th value ={this.state.sort} onClick={this.sortPrice} className="priceHeader" a href = "#">Price</th> 
+              <th value ={this.state.sort} onClick={this.sortCoin} className="changeHeader" a href = "#">24hr Change</th> 
+              <th value ={this.state.sort} onClick={this.sortMarketCap} className="mcHeader" a href = "#">Market Cap</th> 
             </tr>
 
-
-
-
             {this.state.coinApi.map( (elm, index) => {
-                   
             if (index > this.state.value){
               return null;
             }else{
@@ -82,6 +97,7 @@ class App extends Component {
                     <td className="name">{elm.name}</td>
                     <td className="price">${elm.price_usd}</td>
                     <td className="change">{elm.percent_change_24h}% </td>
+                    <td className="marketCap">${elm.market_cap_usd} </td>
                   </tr>
                   )
                 }
