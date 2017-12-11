@@ -11,14 +11,15 @@ class App extends Component {
     this.state = {
       coinApi: [],
       Coin1: {},
-      value: '10',
+      value: '20',
       
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.sortCoin = this.sortCoin.bind(this);
     this.sortMarketCap = this.sortMarketCap.bind(this);
-    this.sortPrice = this.sortPrice.bind(this)
+    this.sortPrice = this.sortPrice.bind(this);
+    this.deleteCoin = this.deleteCoin.bind(this);
   }
 
   componentDidMount(){
@@ -32,7 +33,7 @@ class App extends Component {
   handleChange(event){
     this.setState({ value: event.target.value })
   }
-    //sort
+    //sort 24hr change
   sortCoin(event){
     const sortedCoin = this.state.coinApi.sort(function(a,b){
       return b.percent_change_24h - a.percent_change_24h;
@@ -46,14 +47,18 @@ class App extends Component {
     })
     this.setState({ coinApi: sortMarketCap })
   }
-
+    //sort price
   sortPrice(event){
     const sortPrice = this.state.coinApi.sort(function(a,b){
       return b.price_usd - a.price_usd;
     })
     this.setState({ coinApi: sortPrice })
   }
-
+    //delete coin
+  deleteCoin(index){
+   this.state.coinApi.splice(index, 1);
+    this.setState({ coinApi: this.state.coinApi })
+  }
 
   render() {
     return (
@@ -63,7 +68,7 @@ class App extends Component {
           Cryptocurrencies
         </header>
 
-
+          {/* Button */}
         <section className= "sectionRight">
           <div className="dropdown">
               <button className="dropbtn">Number of coins to display</button>
@@ -92,9 +97,8 @@ class App extends Component {
               return null;
             }else{
               return (
-               
                   <tr key={elm.name}>
-                    <td className="name">{elm.name}</td>
+                    <td value ={this.state.coinApi} onClick={() => this.deleteCoin(index)} className="name">{elm.name}</td>
                     <td className="price">${elm.price_usd}</td>
                     <td className="change">{elm.percent_change_24h}% </td>
                     <td className="marketCap">${elm.market_cap_usd} </td>
@@ -105,12 +109,6 @@ class App extends Component {
             </tbody>
           </table>
           </section>
-
-
-
-    
-
-       
       </div>
     );
   }
